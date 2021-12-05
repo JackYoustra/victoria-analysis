@@ -9,6 +9,8 @@ import WarView from "./WarView";
 const styles: React.CSSProperties = {
   display: "flex",
   flexDirection: "row",
+  alignSelf: "flex-start",
+  fontSize: "1rem",
   // justifyContent: "space-around",
   gap: "8pt",
 }
@@ -18,7 +20,7 @@ const colStyles: React.CSSProperties = {
   flexDirection: "column",
   gap: "8pt",
   height: "85vh",
-  overflow: "scroll",
+  overflow: "auto",
 }
 
 export default function WarsView() {
@@ -34,25 +36,29 @@ export default function WarsView() {
   const wars = box(vickyContext.save?.original.previous_war).concat(box(vickyContext.save?.original.active_war));
   return (
     <div style={styles}>
-      <div style={colStyles}>
-        {
-          wars.map(war => {
-            const warView = WarView({ war: war, onHover: useSelectedWar });
-            if (war == selectedWar) {
-              return (<div style={{border: "inset red", boxSizing: "border-box"}}>
-                {warView}
-              </div>)
-            } else {
-              return warView;
-            }
-          })
-        }
-      </div>
-      <div style={colStyles}>
-        {selectedWar ?
-          box(selectedWar.history.battle).map(battle => BattleView({ battle: battle }))
-          : null}
-      </div>
+      {/*<SimpleBar style={{ maxHeight: 300 }}>*/}
+        <div style={colStyles}>
+          {
+            wars.map(war => {
+              const warView = WarView({ war: war, onHover: useSelectedWar });
+              if (war == selectedWar) {
+                return (<div style={{border: "inset red", boxSizing: "border-box"}}>
+                  {warView}
+                </div>)
+              } else {
+                return warView;
+              }
+            })
+          }
+        </div>
+      {/*</SimpleBar>*/}
+      {/*<SimpleBar style={{ maxHeight: 300 }}>*/}
+        <div style={colStyles}>
+          {selectedWar ?
+            box(selectedWar.history.battle).map(battle => BattleView({ battle: battle }))
+            : null}
+        </div>
+      {/*</SimpleBar>*/}
     </div>
   );
 }

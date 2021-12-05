@@ -6,25 +6,17 @@ import {useSave} from "../logic/VickySavesProvider";
 import {VickySave} from "../logic/processing/vickySave";
 import { parse as v2parser } from "../logic/processing/v2parser";
 import WarsView from "./War/Wars";
+import RouteBar from "./controller/RouteBar";
+import {VickyFrills} from "../styles/VickyFrills";
 
 const VickyButton = styled.button`
-  border-style: groove groove outset groove;
-  border-width: medium;
-  border-color: palegoldenrod;
-  border-radius: 200px;
-
+  ${VickyFrills};
+  
   background-image: radial-gradient(100% 75% at 50% 100%,
   #819aa2 0%,
   #728496 100%);
-  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.15), 0 0 5px 5px inset rgba(0, 0, 0, 0.15);
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  padding: 0.25em 0.5em;
-  font-size: 3rem;
-  font-family: "Times New Roman", serif;
-  margin: 4px 2px;
-  text-shadow: 0 0 1px #fff;
+
+  border-radius: 200px;
 
   &:hover {
     cursor: pointer;
@@ -49,7 +41,9 @@ export default function Home() {
       const extension = blob.name.split('.').pop();
       if (extension === "v2") {
         // Stop here, just parse save file
-        const result = await blob.text();
+        const raw = await blob.arrayBuffer();
+        // Need to decode as latin1
+        const result = new TextDecoder("latin1").decode(raw);
         // @ts-ignore
         const rawOutput = v2parser(result);
         const objectVersion = new VickySave(rawOutput);
@@ -62,24 +56,20 @@ export default function Home() {
     // hiddenFileInput?.current?.click();
   };
 
+  const divItems: React.CSSProperties = vickyContext.state.save ? {
+    display: "flex",
+    alignItems: "center",
+  } : {
+    display: "contents"
+  };
+
   return (
     <>
-      <img src={"https://vic2.paradoxwikis.com/images/0/0e/V2_wiki_logo.png"} className="App-logo" alt="logo" />
-      <VickyButton onClick={handleClick}> Choose Victoria 2 Game or Save Folder </VickyButton>
-      <input
-        type="file"
-        // @ts-ignore
-        webkitdirectory=""
-        // @ts-ignore
-        directory=""
-        multiple
-        ref={hiddenFileInput}
-        style={{display: "none"}}
-        onChange={(event) => {
-
-          console.log(event.target.files);
-        }}
-      />
+      <div style={divItems}>
+        {vickyContext.state.save && <RouteBar />}
+        <img src={"https://vic2.paradoxwikis.com/images/0/0e/V2_wiki_logo.png"} className="App-logo" alt="logo" />
+        <VickyButton onClick={handleClick}> Choose Victoria 2 Game or Save Folder </VickyButton>
+      </div>
       {
         vickyContext.state.save &&
         <WarsView/>
