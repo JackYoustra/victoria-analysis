@@ -13,10 +13,11 @@ export default function Home() {
   const handleClick: MouseEventHandler<HTMLButtonElement> = async event => {
     const blobsInDirectory = await directoryOpen({
       recursive: true,
+      skipDirectory: (entry) => entry.name === "mod",
     });
     for (const blob of blobsInDirectory) {
       const extension = blob.name.split('.').pop();
-      if (extension === "v2") {
+      if (extension === "v2" && blob.directoryHandle?.name.toLowerCase() !== "tutorial") {
         // Stop here, just parse save file
         const raw = await blob.arrayBuffer();
         // Need to decode as latin1

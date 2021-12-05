@@ -3,13 +3,15 @@ import React from "react";
 import VickyContext from "../../logic/processing/vickyContext";
 import {useSave} from "../../logic/VickySavesProvider";
 import _ from "lodash";
+import {localize, VickyGameConfiguration} from "../../logic/processing/vickyConfiguration";
+import {TableItem} from "../../styles/VickyFrills";
 
-function EquipmentView(combatant: Combatant) {
+function EquipmentView(combatant: Combatant, configuration?: VickyGameConfiguration) {
   const engaged = Object.entries(combatant).filter(entry => _.isNumber(entry[1]) && entry[0] != "losses") as [string, number][];
   const strings = engaged.sort((a, b) => a[1] - b[1])
     .map(entry => {
       const [unitName, engagedStrength] = entry as [string, number];
-      const text = `${unitName} - ${engagedStrength.toLocaleString()}`;
+      const text = `${localize(unitName, configuration)} - ${engagedStrength.toLocaleString()}`;
       return text;
     }
   ).join("\n");
@@ -32,9 +34,13 @@ interface BattleViewProps {
 
 export default function BattleView(props: BattleViewProps) {
   const { battle: battle } = props;
-  const vickyContext: VickyContext = useSave().state;
+  const { save, configuration } = useSave().state;
   const province_id = battle.location - 1;
-  const provinceName = vickyContext.save?.provinces[province_id].name;
+  const provinceName = save?.provinces[province_id].name;
+  const attacker = localize(battle.attacker.country, configuration);
+  console.log(`Attacker is ${battle.attacker.country} and made into ${attacker}`)
+  const defender = localize(battle.defender.country, configuration);
+
   return (
     <div style={{whiteSpace: "pre-wrap"}}>
       <table style={{
@@ -59,7 +65,7 @@ export default function BattleView(props: BattleViewProps) {
           <th colSpan={2} style={headerStyle}>
             {"Battle of " + battle.name}
             <br/>
-            {battle.attacker.country + " attacking " + battle.defender.country}
+            {attacker + " attacking " + defender}
           </th>
         </tr>
         <tr>
@@ -71,14 +77,14 @@ export default function BattleView(props: BattleViewProps) {
               border: 0,
             }}>
               <tbody>
-              <tr>
-                <th>Location</th>
-                <td>{provinceName}</td>
-              </tr>
-              <tr>
-                <th>Result</th>
-                <td>{battle.result == "yes" ? battle.attacker.country : battle.defender.country} Victory</td>
-              </tr>
+              <TableItem as="tr">
+                <TableItem as="th">Location</TableItem>
+                <TableItem>{provinceName}</TableItem>
+              </TableItem>
+              <TableItem as="tr">
+                <TableItem as="th">Result</TableItem>
+                <TableItem>{battle.result === "yes" ? attacker : defender} Victory</TableItem>
+              </TableItem>
               </tbody>
             </table>
           </td>
@@ -87,35 +93,35 @@ export default function BattleView(props: BattleViewProps) {
           <th colSpan={2} style={headerStyle}>Belligerents</th>
         </tr>
         <tr>
-          <td style={{display: "table-cell"}}>
+          <TableItem style={{display: "table-cell"}}>
             <b>Attackers</b>
             <br/>
             {battle.attacker.leader}
             <br/>
-            {EquipmentView(battle.attacker)}
-          </td>
-          <td>
+            {EquipmentView(battle.attacker, configuration)}
+          </TableItem>
+          <TableItem>
             <b>Defenders</b>
             <br/>
             {battle.defender.leader}
             <br/>
-            {EquipmentView(battle.defender)}
-          </td>
+            {EquipmentView(battle.defender, configuration)}
+          </TableItem>
         </tr>
         <tr>
           <th colSpan={2} style={headerStyle}>Casualties and losses</th>
         </tr>
         <tr>
-          <td>
+          <TableItem>
             <b>Attackers</b>
             <br/>
             {battle.attacker.losses.toLocaleString()}
-          </td>
-          <td>
+          </TableItem>
+          <TableItem>
             <b>Defenders</b>
             <br/>
             {battle.defender.losses.toLocaleString()}
-          </td>
+          </TableItem>
         </tr>
         </tbody>
       </table>

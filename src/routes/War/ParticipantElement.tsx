@@ -1,8 +1,10 @@
 import {TermStructure} from "../../logic/processing/vickySave";
 import React, {useMemo} from "react";
 import {dateFragment} from "./wikiFormatters";
+import {localize, VickyGameConfiguration} from "../../logic/processing/vickyConfiguration";
 
 interface ParticipantElementProps {
+  configuration?: VickyGameConfiguration,
   terms: TermStructure,
   start: Date,
   end: Date,
@@ -26,7 +28,7 @@ function DateFragment(props: DateFragmentProps) {
 }
 
 export default function ParticipantElement(props: ParticipantElementProps) {
-  const { terms: terms } = props;
+  const { terms, configuration } = props;
   const entries = Object.entries(terms);
   return (
     entries.map((value) => {
@@ -34,7 +36,7 @@ export default function ParticipantElement(props: ParticipantElementProps) {
       return (
         <>
           <br/>
-          {tag}
+          {localize(tag, configuration)}
           <DateFragment enterLeaveWarDates={enterLeaveWarDates} {...props} />
         </>
       );

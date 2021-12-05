@@ -9,7 +9,8 @@ import CasualtyList from "./CasualtyList";
 import {useSave} from "../../logic/VickySavesProvider";
 import { Menu, Item, Separator, Submenu, useContextMenu } from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.css';
-
+import styled from "styled-components";
+import {TableItem} from "../../styles/VickyFrills";
 
 const headerStyle: React.CSSProperties = {
   backgroundColor: "#C3D6EF",
@@ -27,8 +28,7 @@ export const contextMenuID = "War context menu";
 
 export default function WarView(props: WarViewProps) {
   const { war: war, onHover: onHover } = props;
-  const state = useSave().state;
-  const save = state.save;
+  const { save, configuration } = useSave().state;
 
   const mouseOver = () => onHover(war);
 
@@ -45,10 +45,10 @@ export default function WarView(props: WarViewProps) {
       } else {
         name = undefined;
       }
-      return <tr>
-        <th>Primary Cause</th>
-        <td style={{wordWrap: "break-word"}}>{localize(cb, state.configuration) + (name ?? "")}</td>
-      </tr>;
+      return <TableItem as="tr">
+        <TableItem as="th">Primary Cause</TableItem>
+        <TableItem style={{wordWrap: "break-word"}}>{localize(cb, configuration) + (name ?? "")}</TableItem>
+      </TableItem>;
     }
     return null;
   }, [war]);
@@ -96,7 +96,7 @@ export default function WarView(props: WarViewProps) {
           </th>
         </tr>
         <tr>
-          <td colSpan={2}>
+          <TableItem colSpan={2}>
             <table style={{
               width: "100%",
               margin: 0,
@@ -104,10 +104,10 @@ export default function WarView(props: WarViewProps) {
               border: 0,
             }}>
               <tbody>
-              <tr>
-                <th>Date</th>
-                <td>{localizeDate(belligerentTerms.start)} - {localizeDate(belligerentTerms.end)}</td>
-              </tr>
+              <TableItem as="tr">
+                <TableItem as="th">Date</TableItem>
+                <TableItem>{localizeDate(belligerentTerms.start)} - {localizeDate(belligerentTerms.end)}</TableItem>
+              </TableItem>
               {/*<tr>*/}
               {/*  <th>Location</th>*/}
               {/*  <td>Look at the provinces for the continents fought on</td>*/}
@@ -119,48 +119,50 @@ export default function WarView(props: WarViewProps) {
               {/*</tr>*/}
               </tbody>
             </table>
-          </td>
+          </TableItem>
         </tr>
         <tr>
           <th colSpan={2} style={headerStyle}>Belligerents</th>
         </tr>
         <tr>
-          <td style={{display: "table-cell"}}>
+          <TableItem style={{display: "table-cell"}}>
             <b>Attackers</b>
             {ParticipantElement({
+              configuration,
               terms: belligerentTerms.attacker.term,
               start: belligerentTerms.start,
               end: belligerentTerms.end
             })}
-          </td>
-          <td>
+          </TableItem>
+          <TableItem>
             <b>Defenders</b>
             {ParticipantElement({
+              configuration,
               terms: belligerentTerms.defender.term,
               start: belligerentTerms.start,
               end: belligerentTerms.end
             })}
-          </td>
+          </TableItem>
         </tr>
         {/*<tr>*/}
         {/*  <th>Commanders and leaders</th>*/}
         {/*</tr>*/}
         <tr>
-          <th colSpan={2} style={headerStyle}>Casualties and losses (broken down by commander)</th>
+          <th colSpan={2} style={headerStyle}>Casualties and losses</th>
         </tr>
         <tr>
-          <td>
+          <TableItem>
             <b>Attackers</b>
-            {CasualtyList({losses: belligerentTerms.attacker.losses})}
-          </td>
-          <td>
+            {CasualtyList({configuration, losses: belligerentTerms.attacker.losses})}
+          </TableItem>
+          <TableItem>
             <b>Defenders</b>
-            {CasualtyList({losses: belligerentTerms.defender.losses})}
-          </td>
+            {CasualtyList({configuration, losses: belligerentTerms.defender.losses})}
+          </TableItem>
         </tr>
-        <td>
+        <TableItem>
           {}
-        </td>
+        </TableItem>
         </tbody>
       </table>
     </div>

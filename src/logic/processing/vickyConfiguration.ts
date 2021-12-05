@@ -153,7 +153,7 @@ export interface Localisation {
 }
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
-export function localize(key: string, configuration: VickyGameConfiguration | undefined = useSave().state.configuration): string {
+export function localize(key: string, configuration: VickyGameConfiguration | undefined): string {
   return VickyGameConfiguration.localizeToConfiguration(configuration, key);
 }
 
@@ -190,13 +190,13 @@ export class VickyGameConfiguration {
 
   static async parseV2(fileDirectoryHandle: FileWithDirectoryHandle): Promise<any> {
     // @ts-ignore
-    return v2parser.parse(await fileDirectoryHandle.text());
+    return v2parser(await fileDirectoryHandle.text());
   }
 
   static async makeIdeologies(fileDirectoryHandle: FileWithDirectoryHandle): Promise<any> {
     const ideologyText = await fileDirectoryHandle.text()
     // @ts-ignore
-    const ideologyData = v2parser.parse(ideologyText);
+    const ideologyData = v2parser(ideologyText);
     return lower(ideologyData, "group");
   }
 
@@ -225,7 +225,7 @@ export class VickyGameConfiguration {
     const countries = await fileDirectoryHandle.text();
     const mapper = new Map<string, string>();
     // @ts-ignore
-    const parsed = v2parser.parse(countries);
+    const parsed = v2parser(countries);
     const localisations: CountryLocalisation = {}
     // Make paths absolute
     const countriesTest = new RegExp('^countries/');
@@ -242,7 +242,7 @@ export class VickyGameConfiguration {
         // Yay! Replace with country definition, add name to localisation list
         localisations[tag] = parsed[tag];
         // @ts-ignore
-        parsed[tag] = v2parser.parse(await fileDirectoryHandle.text());
+        parsed[tag] = v2parser(await fileDirectoryHandle.text());
       }
     }
     return [parsed, localisations];
@@ -350,7 +350,7 @@ export class VickyGameConfiguration {
         flagFiles.set(fileDirectoryHandle.name.substring(0, fileDirectoryHandle.name.length - 4), fileDirectoryHandle);
       } else if (fileDirectoryHandle.directoryHandle?.name.includes("poptypes")) {
         // @ts-ignore
-        poptypes[fileDirectoryHandle.name] = v2parser.parse(await fileDirectoryHandle.text());
+        poptypes[fileDirectoryHandle.name] = v2parser(await fileDirectoryHandle.text());
       } else {
         const match = fileDirectoryHandle.name.match(terrainImageTest);
         if (!_.isNull(match)) {
