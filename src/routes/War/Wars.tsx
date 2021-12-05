@@ -4,7 +4,11 @@ import VickyContext from "../../logic/processing/vickyContext";
 import {box} from "../../logic/collections/collections";
 import {War} from "../../logic/types/save/save";
 import BattleView from "./BattleView";
-import WarView from "./WarView";
+import WarView, {contextMenuID} from "./WarView";
+import {Item, Menu} from "react-contexify";
+// @ts-ignore
+import domtoimage from "dom-to-image-more";
+import { saveAs } from 'file-saver';
 
 const styles: React.CSSProperties = {
   display: "flex",
@@ -19,9 +23,15 @@ const colStyles: React.CSSProperties = {
   display: "flex",
   flexDirection: "column",
   gap: "8pt",
-  height: "85vh",
+  height: "90vh",
   overflow: "auto",
 }
+
+async function handleExport({e, props}: any) {
+  const image = await (domtoimage.toPng(props.tableRoot) as Promise<Blob>);
+  saveAs(image, `${props.name}.png`);
+}
+
 
 export default function WarsView() {
   const vickyContext: VickyContext = useSave().state;
@@ -59,6 +69,9 @@ export default function WarsView() {
             : null}
         </div>
       {/*</SimpleBar>*/}
+      <Menu id={contextMenuID}>
+        <Item onClick={handleExport}>Save as PNG</Item>
+      </Menu>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from "react";
+import React, {useCallback, useMemo, useRef} from "react";
 import {parseDate, ProcessWar} from "../../logic/processing/vickySave";
 import {localize} from "../../logic/processing/vickyConfiguration";
 import {War} from "../../logic/types/save/save";
@@ -7,6 +7,9 @@ import { localizeDate } from "./wikiFormatters";
 import ParticipantElement from "./ParticipantElement";
 import CasualtyList from "./CasualtyList";
 import {useSave} from "../../logic/VickySavesProvider";
+import { Menu, Item, Separator, Submenu, useContextMenu } from 'react-contexify';
+import 'react-contexify/dist/ReactContexify.css';
+
 
 const headerStyle: React.CSSProperties = {
   backgroundColor: "#C3D6EF",
@@ -19,6 +22,8 @@ interface WarViewProps {
   war: War,
   onHover: (selected: War) => void,
 }
+
+export const contextMenuID = "War context menu";
 
 export default function WarView(props: WarViewProps) {
   const { war: war, onHover: onHover } = props;
@@ -48,8 +53,24 @@ export default function WarView(props: WarViewProps) {
     return null;
   }, [war]);
 
+  const { show: showContextMenu } = useContextMenu({
+    id: contextMenuID,
+  });
+
+  const tableRoot = useRef<HTMLDivElement | null>(null);
+
+  const handleContextMenu = useCallback((event) => {
+    event.preventDefault();
+    showContextMenu(event, {
+      props: {
+        name: war.name,
+        tableRoot: tableRoot.current,
+      }
+    })
+  }, []);
+
   return (
-    <div style={{whiteSpace: "pre-wrap"}} onMouseOver={mouseOver}>
+    <div ref={tableRoot} onContextMenu={handleContextMenu} style={{whiteSpace: "pre-wrap"}} onMouseOver={mouseOver}>
       <table style={{
         fontFamily: "sans-serif",
         border: "1px",

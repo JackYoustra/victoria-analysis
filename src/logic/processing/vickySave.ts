@@ -121,12 +121,9 @@ function getFactories(vickySave: any): any[] {
 
 const vickyDateRegex = new RegExp(String.raw`([0-9]+)\.([0-9]+)\.([0-9]+)`);
 export function parseDate(from: string): Date | undefined {
-  console.log(`stringy ${from}`)
   const match = from.match(vickyDateRegex);
-  console.log(JSON.stringify(match));
   if (match?.length == 4) {
     const [{}, year, month, date] = match;
-    console.log("yes");
     return new Date(parseInt(year), parseInt(month) - 1, parseInt(date)); // lol js months start at 0
   }
   return undefined;

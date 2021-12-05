@@ -9,7 +9,6 @@ import RoutedEditorScreen from "./controller/RoutedEditorScreen";
 import {VickyButton} from "../components/VickyButton";
 
 export default function Home() {
-  const hiddenFileInput = React.useRef<HTMLInputElement | null>(null);
   const vickyContext = useSave();
   const handleClick: MouseEventHandler<HTMLButtonElement> = async event => {
     const blobsInDirectory = await directoryOpen({
