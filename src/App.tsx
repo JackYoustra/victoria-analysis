@@ -6,11 +6,9 @@ import VickySavesProvider from "./logic/VickySavesProvider";
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <VickySavesProvider>
-            <Home />
-        </VickySavesProvider>
-      </header>
+      <VickySavesProvider>
+          <Home />
+      </VickySavesProvider>
     </div>
   );
 }

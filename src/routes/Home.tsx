@@ -7,6 +7,21 @@ import { parse as v2parser } from "../logic/processing/v2parser";
 import RouteBar from "./controller/RouteBar";
 import RoutedEditorScreen from "./controller/RoutedEditorScreen";
 import {VickyButton} from "../components/VickyButton";
+import styled from "styled-components";
+
+const Topper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  overflow: hidden;
+`;
+
+const SaveLoadedTopper = styled(Topper)`
+  justify-content: center;
+`;
 
 export default function Home() {
   const vickyContext = useSave();
@@ -52,8 +67,10 @@ export default function Home() {
     }
   }, [vickyContext.state]);
 
+  const UsedTopper = vickyContext.state.save ? SaveLoadedTopper : Topper;
+
   return (
-    <>
+    <UsedTopper>
       <div style={divItems}>
         {vickyContext.state.save && <RouteBar />}
         <img src={"https://vic2.paradoxwikis.com/images/0/0e/V2_wiki_logo.png"} className="App-logo" alt="logo" />
@@ -63,6 +80,6 @@ export default function Home() {
         vickyContext.state.save &&
         <RoutedEditorScreen/>
       }
-    </>
+    </UsedTopper>
   );
 }

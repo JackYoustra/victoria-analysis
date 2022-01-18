@@ -54,9 +54,9 @@ export default function DataExporter(props: DataExporterProps) {
     cellStyle: {
       textAlign: "leading"
     },
-    checkboxSelection: true,
-    headerCheckboxSelection: true,
-    headerCheckboxSelectionFilteredOnly: true,
+    // checkboxSelection: true,
+    // headerCheckboxSelection: true,
+    // headerCheckboxSelectionFilteredOnly: true,
     floatingFilter: true,
     sortable: true,
   };
@@ -70,7 +70,7 @@ export default function DataExporter(props: DataExporterProps) {
       <VickyMinorButton onClick={download}>
         Download CSV
       </VickyMinorButton>
-      <div style={{ display: "table", width: '100%', height: '100%', flexGrow: 1 }} className="ag-theme-balham-dark">
+      <div style={{ display: "table", width: '100%', height: '80vh', flexGrow: 1 }} className="ag-theme-balham-dark">
         <div style={{display: "table-cell"}}>
         <AgGridReact
           reactUi={true}

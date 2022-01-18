@@ -9,11 +9,11 @@ const Bar = styled.div`
 
 const Element = styled(Link)`
   ${VickyFrills};
-  padding: 0;
+  padding: 0 10pt 0 0;
   flex-direction: column;
   background-image: url(https://vic2.paradoxwikis.com/images/0/07/MainBG2.png);
   height: 80pt;
-  width: 200pt;
+  //width: 200pt;
   color: white;
   
   &:active {

@@ -1,23 +1,10 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-}
-
-.App-header {
   background-color: #282c34;
   background-image:url(https://vic2.paradoxwikis.com/images/0/07/MainBG2.png);
   background-size: cover;
   background-position: center;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-  overflow: hidden;
 }
 
 .App-link {
