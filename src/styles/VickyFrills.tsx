@@ -1,5 +1,9 @@
 import styled, {css} from "styled-components";
 
+export const VickyText = css`
+  font-family: "Times New Roman", serif;
+`;
+
 export const VickyFrills = css`
   border-style: groove groove outset groove;
   border-width: medium;
@@ -11,7 +15,7 @@ export const VickyFrills = css`
   display: inline-block;
   padding: 0.25em 0.5em;
   font-size: 3rem;
-  font-family: "Times New Roman", serif;
+  ${VickyText};
   margin: 4px 2px;
   text-shadow: 0 0 1px #fff;
 `;
