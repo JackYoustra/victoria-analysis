@@ -43,8 +43,8 @@ export default function RouteBar() {
       <Element to="/factories">
         <TitleHeader>
           <TopIcon
-            src="https://vic2.paradoxwikis.com/images/3/37/Budget_nat_stockpile.png"
-            alt="Save Icon"
+            src="https://vic2.paradoxwikis.com/images/4/4d/Tech_industrial.png"
+            alt="Factory Icon"
           />
           Factories
         </TitleHeader>
@@ -52,8 +52,8 @@ export default function RouteBar() {
       <Element to="/pops">
         <TitleHeader>
           <TopIcon
-            src="https://vic2.paradoxwikis.com/images/3/37/Budget_nat_stockpile.png"
-            alt="Save Icon"
+            src="https://vic2.paradoxwikis.com/images/9/98/Province_pop.png"
+            alt="POP Icon"
           />
           Pops
         </TitleHeader>
