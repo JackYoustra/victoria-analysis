@@ -37,6 +37,7 @@ const TitleRow = styled(SaveRow)`
   font-weight: bold;
   padding-left: 8pt;
   margin: 2pt;
+  cursor: pointer;
 `;
 
 const SubtitleRow = styled(SaveRow)`
@@ -80,6 +81,7 @@ const CollapsedButton = styled.button`
   border: 0;
   background: transparent;
   font-size: larger;
+  cursor: pointer;
 
   &:hover {
     filter: invert(10%);

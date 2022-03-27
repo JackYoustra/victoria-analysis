@@ -2,7 +2,7 @@ import Image from "image-js";
 import {TerrainInfo} from "../types/configuration/vickyTerrainDefinition";
 import _ from "lodash";
 import {terrainForColor} from "../priors/TerrainPalette";
-import {FileWithDirectoryHandle} from "browser-fs-access";
+import {FileWithDirectoryAndFileHandle} from "browser-fs-access";
 import { parse as v2parser } from "./v2parser";
 import Papa, {ParseResult} from "papaparse";
 // @ts-ignore
@@ -111,7 +111,7 @@ interface URLCachedImage {
   url: string;
 }
 
-async function makeTargaImage(fileDirectoryHandle: FileWithDirectoryHandle): Promise<string | undefined> {
+async function makeTargaImage(fileDirectoryHandle: FileWithDirectoryAndFileHandle): Promise<string | undefined> {
   const tga = new TGA(new Buffer(await fileDirectoryHandle.arrayBuffer()));
   const image = new Image(tga.width, tga.height, tga.pixels, {
     // @ts-ignore
@@ -160,9 +160,9 @@ type CountryLocalisation = { [tag: string]: string };
 type LocalizationKeys = { [localizationKey: string]: CountryLocalisation };
 export class VickyGameConfiguration {
   // Source files of flags
-  flagSources?: Map<string, FileWithDirectoryHandle>;
+  flagSources?: Map<string, FileWithDirectoryAndFileHandle>;
   // Sources of terrain images, from terrain type
-  terrainSources?: Map<string, FileWithDirectoryHandle>;
+  terrainSources?: Map<string, FileWithDirectoryAndFileHandle>;
   // Localisation key to localisation language object
   localisationSet?: { [key: string]: Localisation | undefined };
   // Ideology to ideology object map
@@ -175,7 +175,7 @@ export class VickyGameConfiguration {
   countries?: { [fullname: string]: Country };
   poptypes?: { [poptype: string]: any }
 
-  private constructor(flagSources?: Map<string, FileWithDirectoryHandle>, terrainSources?: Map<string, FileWithDirectoryHandle>, localisationSet?: any, ideologies?: any, provinceMap?: URLCachedImage, terrainLookup?: Map<number, string>, provinceLookup?: ProvinceLookup, countries?: any, poptypes?: { [poptype: string]: any }) {
+  private constructor(flagSources?: Map<string, FileWithDirectoryAndFileHandle>, terrainSources?: Map<string, FileWithDirectoryAndFileHandle>, localisationSet?: any, ideologies?: any, provinceMap?: URLCachedImage, terrainLookup?: Map<number, string>, provinceLookup?: ProvinceLookup, countries?: any, poptypes?: { [poptype: string]: any }) {
     this.flagSources = flagSources;
     this.terrainSources = terrainSources;
     this.localisationSet = localisationSet;
@@ -187,19 +187,19 @@ export class VickyGameConfiguration {
     this.poptypes = poptypes;
   }
 
-  static async parseV2(fileDirectoryHandle: FileWithDirectoryHandle): Promise<any> {
+  static async parseV2(fileDirectoryHandle: FileWithDirectoryAndFileHandle): Promise<any> {
     // @ts-ignore
     return v2parser(await fileDirectoryHandle.text());
   }
 
-  static async makeIdeologies(fileDirectoryHandle: FileWithDirectoryHandle): Promise<any> {
+  static async makeIdeologies(fileDirectoryHandle: FileWithDirectoryAndFileHandle): Promise<any> {
     const ideologyText = await fileDirectoryHandle.text()
     // @ts-ignore
     const ideologyData = v2parser(ideologyText);
     return lower(ideologyData, "group");
   }
 
-  static async makeImage(fileDirectoryHandle: FileWithDirectoryHandle): Promise<URLCachedImage> {
+  static async makeImage(fileDirectoryHandle: FileWithDirectoryAndFileHandle): Promise<URLCachedImage> {
     const image = await fileDirectoryHandle.arrayBuffer().then(Image.load);
     // @ts-ignore
     image.flipY();
@@ -209,7 +209,7 @@ export class VickyGameConfiguration {
     };
   }
 
-  static async makeMap(fileDirectoryHandle: FileWithDirectoryHandle): Promise<URLCachedImage> {
+  static async makeMap(fileDirectoryHandle: FileWithDirectoryAndFileHandle): Promise<URLCachedImage> {
     const middleMapImage = await fileDirectoryHandle.arrayBuffer().then(Image.load);
     // @ts-ignore
     middleMapImage.flipY();
@@ -220,7 +220,7 @@ export class VickyGameConfiguration {
   }
 
   // Returns promise of country definitions and their localisations
-  static async makeCountries(fileDirectoryHandle: FileWithDirectoryHandle, directory: FileWithDirectoryHandle[]): Promise<[any, CountryLocalisation]> {
+  static async makeCountries(fileDirectoryHandle: FileWithDirectoryAndFileHandle, directory: FileWithDirectoryAndFileHandle[]): Promise<[any, CountryLocalisation]> {
     const countries = await fileDirectoryHandle.text();
     const mapper = new Map<string, string>();
     // @ts-ignore
@@ -247,7 +247,7 @@ export class VickyGameConfiguration {
     return [parsed, localisations];
   }
 
-  static makeLocalization(fileDirectoryHandle: FileWithDirectoryHandle): Promise<LocalizationKeys> {
+  static makeLocalization(fileDirectoryHandle: FileWithDirectoryAndFileHandle): Promise<LocalizationKeys> {
     const dankness = new Promise((complete, error) => {
       // @ts-ignore
       Papa.parse(fileDirectoryHandle, {
@@ -294,12 +294,12 @@ export class VickyGameConfiguration {
     }
   }
 
-  public static async createSave(saveDirectory: FileWithDirectoryHandle[]): Promise<VickyGameConfiguration> {
+  public static async createSave(saveDirectory: FileWithDirectoryAndFileHandle[]): Promise<VickyGameConfiguration> {
     let promises: (Promise<any> | null)[] = Array(6).fill(null);
 
-    let localisations: [Promise<any>, FileWithDirectoryHandle][] = [];
-    let flagFiles = new Map<string, FileWithDirectoryHandle>();
-    let terrainInterfaceImageFiles = new Map<string, FileWithDirectoryHandle>();
+    let localisations: [Promise<any>, FileWithDirectoryAndFileHandle][] = [];
+    let flagFiles = new Map<string, FileWithDirectoryAndFileHandle>();
+    let terrainInterfaceImageFiles = new Map<string, FileWithDirectoryAndFileHandle>();
     let poptypes: { [poptype: string]: any } = {};
     for (const fileDirectoryHandle of saveDirectory) {
       console.log("Found " + fileDirectoryHandle.name);

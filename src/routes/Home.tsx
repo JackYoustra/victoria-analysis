@@ -12,6 +12,8 @@ import SaveViewer from "./SaveViewer";
 import _ from "lodash";
 import { saveAs } from 'file-saver';
 import {Save} from "../logic/types/save/save";
+import {wrap} from "comlink";
+import {SaveLoader} from "../logic/processing/loadSaveFromFile";
 
 const Topper = styled.div`
   display: flex;
@@ -102,15 +104,11 @@ export default function Home() {
   const onSelect = useCallback (async (index: number) => {
     const selected = vickyContext.state.saves?.[index];
     if (!_.isUndefined(selected)) {
-      // Stop here, just parse save file
-      const raw = await selected.handle.arrayBuffer();
-      // Need to decode as latin1
-      const result = new TextDecoder("latin1").decode(raw);
-      // @ts-ignore
-      const rawOutput = v2parser(result);
-      const objectVersion = new VickySave(rawOutput);
-
-      vickyContext.dispatch({type: "setSave", value: objectVersion});
+      const worker = new Worker(new URL('../logic/processing/loadSaveFromFile.ts', import.meta.url));
+      const proxy = wrap<SaveLoader>(worker);
+      vickyContext.dispatch({type: "loadSave", worker: worker});
+      const save = await proxy.loadSaveFromFile(selected.handle);
+      vickyContext.dispatch({type: "setSave", value: save});
       setSelected([index]);
     }
   }, [vickyContext]);

@@ -40,7 +40,7 @@ export default function DataExporter(props: DataExporterProps) {
   }, [factories]);
 
   const defaultDef: ColDef = {
-    cellRenderer: params => {
+    cellRenderer: (params: { value: any; }) => {
       // put the value in bold
       if (_.isString(params.value)) {
         return params.value;

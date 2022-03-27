@@ -3,9 +3,14 @@ import {VickySave} from "./processing/vickySave";
 import _ from "lodash";
 import VickyContext from "./processing/vickyContext";
 import {VickyGameConfiguration} from "./processing/vickyConfiguration";
-import {FileWithDirectoryHandle} from "browser-fs-access";
+import {FileWithDirectoryAndFileHandle} from "browser-fs-access";
+import {Remote} from "comlink";
+import {SaveLoader} from "./processing/loadSaveFromFile";
 
-type Action = {type: 'addSave', handle: FileWithDirectoryHandle} | {type: 'setSave', value: VickySave} | {type: 'mergeConfiguration', value: VickyGameConfiguration}
+type Action = {type: 'addSave', handle: FileWithDirectoryAndFileHandle} |
+  {type: 'loadSave', worker: Worker} |
+  {type: 'setSave', value: VickySave} |
+  {type: 'mergeConfiguration', value: VickyGameConfiguration}
 type Dispatch = (action: Action) => void
 type State = VickyContext
 type VickySavesProviderProps = {children: React.ReactNode}
@@ -20,6 +25,12 @@ function saveReducer(state: State, action: Action): VickyContext {
       return {
         ...state,
         saves: [...state.saves ?? [], {handle: action.handle}]
+      };
+    case 'loadSave':
+      state.saveLoader?.terminate();
+      return {
+        ...state,
+        saveLoader: action.worker
       };
     case 'setSave': {
       return {
