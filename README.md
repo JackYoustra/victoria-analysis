@@ -1,8 +1,6 @@
 # Victoria Savegame Analyzer!
 
-## Run it in your browser!
-
-[//]: # (Link to website)
+## [Run it in your browser!](https://jackyoustra.github.io/victoria-analysis/)
 
 ## Motivation
 This project was made out of frustration with the installation difficulties in the traditional savegame analyzer.
