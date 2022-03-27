@@ -1,4 +1,4 @@
-import React, {MouseEventHandler, useMemo} from "react";
+import React, {MouseEventHandler, useCallback, useMemo, useState} from "react";
 import {directoryOpen} from "browser-fs-access";
 import {VickyGameConfiguration} from "../logic/processing/vickyConfiguration";
 import {useSave} from "../logic/VickySavesProvider";
@@ -8,6 +8,9 @@ import RouteBar from "./controller/RouteBar";
 import RoutedEditorScreen from "./controller/RoutedEditorScreen";
 import {VickyButton} from "../components/VickyButton";
 import styled from "styled-components";
+import SaveViewer from "./SaveViewer";
+import _ from "lodash";
+import { saveAs } from 'file-saver';
 
 const Topper = styled.div`
   display: flex;
@@ -23,6 +26,32 @@ const SaveLoadedTopper = styled(Topper)`
   justify-content: center;
 `;
 
+const SaveButtons = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  transform: scale(50%);
+`;
+
+const GameSidebar = styled.div`
+  position: fixed;
+  top: 50%;
+  right: 0;
+  /* bring your own prefixes */
+  transform: translate(0%, -50%);
+  z-index: 1;
+`;
+
+function DownloadJSON(props: { save: VickySave }) {
+  return (<VickyButton onClick={
+    () => {
+      const blob = new Blob([JSON.stringify(props.save, null, 2)], {type: "application/json"});
+      saveAs(blob, "save.json");
+    }
+  }>Download JSON
+  </VickyButton>);
+}
+
 export default function Home() {
   const vickyContext = useSave();
   const handleClick: MouseEventHandler<HTMLButtonElement> = async event => {
@@ -33,52 +62,82 @@ export default function Home() {
     for (const blob of blobsInDirectory) {
       const extension = blob.name.split('.').pop();
       if (extension === "v2" && blob.directoryHandle?.name.toLowerCase() !== "tutorial") {
-        // Stop here, just parse save file
-        const raw = await blob.arrayBuffer();
-        // Need to decode as latin1
-        const result = new TextDecoder("latin1").decode(raw);
-        // @ts-ignore
-        const rawOutput = v2parser(result);
-        const objectVersion = new VickySave(rawOutput);
-        vickyContext.dispatch({ type: "setSave", value: objectVersion});
-        return;
+        vickyContext.dispatch({ type: "addSave", handle: blob} );
       }
     }
     const config = await VickyGameConfiguration.createSave(blobsInDirectory);
     vickyContext.dispatch({type: "mergeConfiguration", value: config});
-    // hiddenFileInput?.current?.click();
   };
+
+  const shouldShowSaveBox = _.isArray(vickyContext.state.saves) && vickyContext.state.saves.length > 0;
 
   const divItems: React.CSSProperties = vickyContext.state.save ? {
     display: "flex",
     alignItems: "center",
     overflow: "hidden",
-  } : {
+    flexWrap: "wrap",
+} : {
     display: "contents"
   };
 
   const text = useMemo(() => {
-    if (!vickyContext.state.save) {
-      return "Load Victoria 2 Save folder";
-    } else if (!vickyContext.state.configuration) {
-      return "Load Victoria 2 Config folder";
+    if (!vickyContext.state.saves) {
+      return "Load Save folder";
     } else {
       return "Reload folder";
     }
-  }, [vickyContext.state]);
+  }, [vickyContext.state.saves]);
+
+  const configText = useMemo(() => {
+    if (!vickyContext.state.configuration) {
+      return "Load Configuration";
+    } else {
+      return "Reload Configuration";
+    }
+  }, [vickyContext.state.configuration]);
 
   const UsedTopper = vickyContext.state.save ? SaveLoadedTopper : Topper;
+  const [selected, setSelected] = useState<number[]>([]);
+  const onSelect = useCallback (async (index: number) => {
+    const selected = vickyContext.state.saves?.[index];
+    if (!_.isUndefined(selected)) {
+      // Stop here, just parse save file
+      const raw = await selected.handle.arrayBuffer();
+      // Need to decode as latin1
+      const result = new TextDecoder("latin1").decode(raw);
+      // @ts-ignore
+      const rawOutput = v2parser(result);
+      const objectVersion = new VickySave(rawOutput);
+
+      vickyContext.dispatch({type: "setSave", value: objectVersion});
+      setSelected([index]);
+    }
+  }, [vickyContext]);
 
   return (
     <UsedTopper>
       <div style={divItems}>
         {vickyContext.state.save && <RouteBar />}
+        {vickyContext.state.save && <DownloadJSON  save={vickyContext.state.save}/>}
         <img src={"https://vic2.paradoxwikis.com/images/0/0e/V2_wiki_logo.png"} className="App-logo" alt="logo" />
-        <VickyButton onClick={handleClick}> {text} </VickyButton>
+        <SaveButtons>
+          <VickyButton onClick={handleClick}> {text} </VickyButton>
+          <VickyButton onClick={handleClick}> {configText} </VickyButton>
+        </SaveButtons>
       </div>
       {
         vickyContext.state.save &&
         <RoutedEditorScreen/>
+      }
+      {
+        shouldShowSaveBox &&
+          <GameSidebar>
+              <SaveViewer
+                  saves={vickyContext.state.saves?.map(save => [save.handle.name, new Date(save.handle.lastModified)])}
+                  onSelect={onSelect}
+                  selected={selected}
+              />
+          </GameSidebar>
       }
     </UsedTopper>
   );
