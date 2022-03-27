@@ -1,10 +1,12 @@
 import {Battle, Combatant} from "../../logic/types/save/save";
-import React from "react";
+import React, {useCallback, useRef} from "react";
 import VickyContext from "../../logic/processing/vickyContext";
 import {useSave} from "../../logic/VickySavesProvider";
 import _ from "lodash";
 import {localize, VickyGameConfiguration} from "../../logic/processing/vickyConfiguration";
 import {TableItem} from "../../styles/VickyFrills";
+import {useContextMenu} from "react-contexify";
+import {contextMenuID} from "./WarView";
 
 function EquipmentView(combatant: Combatant, configuration?: VickyGameConfiguration) {
   const engaged = Object.entries(combatant).filter(entry => _.isNumber(entry[1]) && entry[0] != "losses") as [string, number][];
@@ -38,11 +40,26 @@ export default function BattleView(props: BattleViewProps) {
   const province_id = battle.location - 1;
   const provinceName = save?.provinces[province_id].name;
   const attacker = localize(battle.attacker.country, configuration);
-  console.log(`Attacker is ${battle.attacker.country} and made into ${attacker}`)
   const defender = localize(battle.defender.country, configuration);
 
+  const { show: showContextMenu } = useContextMenu({
+    id: contextMenuID,
+  });
+
+  const tableRoot = useRef<HTMLDivElement | null>(null);
+
+  const handleContextMenu = useCallback((event) => {
+    event.preventDefault();
+    showContextMenu(event, {
+      props: {
+        name: battle.name,
+        tableRoot: tableRoot.current,
+      }
+    })
+  }, []);
+
   return (
-    <div style={{whiteSpace: "pre-wrap"}}>
+    <div ref={tableRoot} onContextMenu={handleContextMenu} style={{whiteSpace: "pre-wrap"}}>
       <table style={{
         fontFamily: "sans-serif",
         border: "1px",

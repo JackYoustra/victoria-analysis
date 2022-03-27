@@ -32,7 +32,6 @@ async function handleExport({e, props}: any) {
   saveAs(image, `${props.name}.png`);
 }
 
-
 export default function WarsView() {
   const vickyContext: VickyContext = useSave().state;
   const [selectedWar, useSelectedWar] = useState<War | undefined>(undefined);
@@ -46,29 +45,25 @@ export default function WarsView() {
   const wars = box(vickyContext.save?.original.previous_war).concat(box(vickyContext.save?.original.active_war));
   return (
     <div style={styles}>
-      {/*<SimpleBar style={{ maxHeight: 300 }}>*/}
-        <div style={colStyles}>
-          {
-            wars.map(war => {
-              const warView = WarView({ war: war, onHover: useSelectedWar });
-              if (war == selectedWar) {
-                return (<div style={{border: "inset red", boxSizing: "border-box"}}>
-                  {warView}
-                </div>)
-              } else {
-                return warView;
-              }
-            })
-          }
-        </div>
-      {/*</SimpleBar>*/}
-      {/*<SimpleBar style={{ maxHeight: 300 }}>*/}
-        <div style={colStyles}>
-          {selectedWar ?
-            box(selectedWar.history.battle).map(battle => BattleView({ battle: battle }))
-            : null}
-        </div>
-      {/*</SimpleBar>*/}
+      <div style={colStyles}>
+        {
+          wars.map(war => {
+            const warView = <WarView war={war} onHover={useSelectedWar}/>;
+            if (war == selectedWar) {
+              return (<div style={{border: "inset red", boxSizing: "border-box"}}>
+                {warView}
+              </div>)
+            } else {
+              return warView;
+            }
+          })
+        }
+      </div>
+      <div style={colStyles}>
+        {selectedWar ?
+          box(selectedWar.history.battle).map(battle => <BattleView battle={battle} />)
+          : null}
+      </div>
       <Menu id={contextMenuID}>
         <Item onClick={handleExport}>Save as PNG</Item>
       </Menu>
