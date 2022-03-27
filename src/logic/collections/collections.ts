@@ -77,7 +77,8 @@ Object.flatten = function(data) {
       var isEmpty = true;
       for (var p in cur) {
         isEmpty = false;
-        recurse(cur[p], prop ? prop+"."+p : p);
+        // Having this be a '.' causes weirdness with ag-grid
+        recurse(cur[p], prop ? prop+"-"+p : p);
       }
       if (isEmpty && prop)
         result[prop] = {};
