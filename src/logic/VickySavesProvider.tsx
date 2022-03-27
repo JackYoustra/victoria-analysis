@@ -3,8 +3,9 @@ import {VickySave} from "./processing/vickySave";
 import _ from "lodash";
 import VickyContext from "./processing/vickyContext";
 import {VickyGameConfiguration} from "./processing/vickyConfiguration";
+import {FileWithDirectoryHandle} from "browser-fs-access";
 
-type Action = {type: 'setSave', value: VickySave} | {type: 'mergeConfiguration', value: VickyGameConfiguration}
+type Action = {type: 'addSave', handle: FileWithDirectoryHandle} | {type: 'setSave', value: VickySave} | {type: 'mergeConfiguration', value: VickyGameConfiguration}
 type Dispatch = (action: Action) => void
 type State = VickyContext
 type VickySavesProviderProps = {children: React.ReactNode}
@@ -15,6 +16,11 @@ const VickySavesContext = React.createContext<
 
 function saveReducer(state: State, action: Action): VickyContext {
   switch (action.type) {
+    case 'addSave':
+      return {
+        ...state,
+        saves: [...state.saves ?? [], {handle: action.handle}]
+      };
     case 'setSave': {
       return {
         ...state,
