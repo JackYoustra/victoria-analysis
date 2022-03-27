@@ -7,7 +7,6 @@ import { parse as v2parser } from "./v2parser";
 import Papa, {ParseResult} from "papaparse";
 // @ts-ignore
 import TGA from "tga";
-import { useSave } from "../VickySavesProvider";
 import { Country } from "../types/save/vickyCountryDefinition";
 import {lower} from "../collections/collections";
 

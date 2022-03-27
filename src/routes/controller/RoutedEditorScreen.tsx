@@ -1,6 +1,4 @@
 import {Route, Routes} from "react-router-dom";
-import Home from "../Home";
-import SaveViewer from "../SaveViewer";
 import React from "react";
 import DataExporter from "../Data/DataExporter";
 import WarsView from "../War/Wars";

@@ -20,7 +20,7 @@ export default function CasualtyList(props: CasualtyListProps) {
     return retVal;
   });
   const sorted = lossList
-    .filter(x => x[2] != 0)
+    .filter(x => x[2] !== 0)
     .sort(((a, b) => b[2] - a[2]));
   const text = sorted.map(x => {
     const battleTitle = `${x[2].toLocaleString()} from ${localize(x[0], configuration)}`;

@@ -1,4 +1,4 @@
-import React, {MouseEventHandler} from 'react';
+import React from 'react';
 import './App.css';
 import Home from "./routes/Home";
 import VickySavesProvider from "./logic/VickySavesProvider";

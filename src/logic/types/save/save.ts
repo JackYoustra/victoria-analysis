@@ -32,7 +32,7 @@ import {
   TransportImprov,
   UpperHouse
 } from "./vanillaConfigurations";
-import {Artisan, Freeman, MiddleClass, POP, UpperClass} from "./pops";
+import {Artisan, MiddleClass, POP, UpperClass} from "./pops";
 
 type VickyDate = Date;
 

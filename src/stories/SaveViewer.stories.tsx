@@ -2,7 +2,6 @@ import React from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import {VickyButton, VickyMinorButton} from "../components/VickyButton";
 import SaveViewer from "../routes/SaveViewer";
 
 //👇 This default export determines where your story goes in the story list

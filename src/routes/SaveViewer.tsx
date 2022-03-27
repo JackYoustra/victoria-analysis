@@ -1,5 +1,5 @@
-import styled, {StyledFunction} from "styled-components";
-import {VickyFrills, VickyText} from "../styles/VickyFrills";
+import styled from "styled-components";
+import {VickyText} from "../styles/VickyFrills";
 import {useCallback, useState} from "react";
 
 export interface SaveViewerProps {

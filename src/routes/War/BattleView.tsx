@@ -1,6 +1,5 @@
 import {Battle, Combatant} from "../../logic/types/save/save";
 import React, {useCallback, useRef} from "react";
-import VickyContext from "../../logic/processing/vickyContext";
 import {useSave} from "../../logic/VickySavesProvider";
 import _ from "lodash";
 import {localize, VickyGameConfiguration} from "../../logic/processing/vickyConfiguration";
@@ -9,7 +8,7 @@ import {useContextMenu} from "react-contexify";
 import {contextMenuID} from "./WarView";
 
 function EquipmentView(combatant: Combatant, configuration?: VickyGameConfiguration) {
-  const engaged = Object.entries(combatant).filter(entry => _.isNumber(entry[1]) && entry[0] != "losses") as [string, number][];
+  const engaged = Object.entries(combatant).filter(entry => _.isNumber(entry[1]) && entry[0] !== "losses") as [string, number][];
   const strings = engaged.sort((a, b) => a[1] - b[1])
     .map(entry => {
       const [unitName, engagedStrength] = entry as [string, number];
@@ -35,7 +34,7 @@ interface BattleViewProps {
 }
 
 export default function BattleView(props: BattleViewProps) {
-  const { battle: battle } = props;
+  const { battle } = props;
   const { save, configuration } = useSave().state;
   const province_id = battle.location - 1;
   const provinceName = save?.provinces[province_id].name;
@@ -56,7 +55,7 @@ export default function BattleView(props: BattleViewProps) {
         tableRoot: tableRoot.current,
       }
     })
-  }, []);
+  }, [showContextMenu, battle.name, tableRoot]);
 
   return (
     <div ref={tableRoot} onContextMenu={handleContextMenu} style={{whiteSpace: "pre-wrap"}}>

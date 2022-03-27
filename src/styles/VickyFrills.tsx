@@ -20,22 +20,6 @@ export const VickyFrills = css`
   text-shadow: 0 0 1px #fff;
 `;
 
-export const WikiTable = styled.table`
-  fontFamily: sans-serif;
-  border: 1px;
-  borderSpacing: 3px;
-  backgroundColor: #f8f9fa;
-  color: black;
-  // margin: 0.5em 0 0.5em 1em;
-  padding: 0.2em;
-  // float: right;
-  // clear: right;
-  fontSize: 88%;
-  lineHeight: 1.5em;
-  width: 22em;
-  verticalAlign: top;
-`;
-
 export const TableItem = styled.td`
   vertical-align: top;
   text-align: initial;

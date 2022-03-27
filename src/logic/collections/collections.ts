@@ -1,5 +1,4 @@
 import _ from "lodash";
-import {string} from "prop-types";
 
 export function box<T>(multiplicityMaybe: T[] | T | undefined): T[] {
   if (_.isUndefined(multiplicityMaybe)) {
