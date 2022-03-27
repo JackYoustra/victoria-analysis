@@ -17,7 +17,7 @@ export default {
 //👇 We create a “template” of how args map to rendering
 const Template: ComponentStory<typeof SaveViewer> = (args) => <SaveViewer {...args}/>;
 
-export const FirstStory = Template.bind({});
+export const PopulatedList = Template.bind({});
 
 const before = (offset: number): Date => {
   const current = new Date();
@@ -25,8 +25,9 @@ const before = (offset: number): Date => {
   return current;
 }
 
-FirstStory.args = {
+PopulatedList.args = {
   /*👇 The args you need here will depend on your component */
+  loading: true,
   saves: [["autosave.v2", new Date()], ["first.v2", before(1)], ["second.v2", before(2)], ["third.v2", before(3)]],
   selected: [1],
 };

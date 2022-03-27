@@ -1,8 +1,9 @@
-import styled from "styled-components";
+import styled, {css, keyframes} from "styled-components";
 import {VickyText} from "../styles/VickyFrills";
 import {useCallback, useState} from "react";
 
 export interface SaveViewerProps {
+  loading?: boolean;
   selected?: number[];
   saves?: [string, Date][];
   onSelect?: (index: number) => void;
@@ -47,8 +48,19 @@ const SubtitleRow = styled(SaveRow)`
 `;
 
 interface SaveLoadButtonProps {
+  loading?: boolean;
   selected?: boolean;
 }
+
+const pulsate = keyframes`
+  from {
+    filter: drop-shadow(0px 0px 20px #194d33);
+    background-position: 0 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+`;
 
 const SaveLoadButton = styled.button<SaveLoadButtonProps>`
   ${VickyText};
@@ -60,6 +72,13 @@ const SaveLoadButton = styled.button<SaveLoadButtonProps>`
 
   display: block;
   width: 100%;
+  
+  ${({ loading }) => loading && css`
+    //background: linear-gradient(130deg, #ff7e00, #ffffff, #5cff00);
+    background: linear-gradient(-45deg, rgba(238, 119, 82, 0), #6eff32);
+    background-size: 400% 400%;
+    animation: ${pulsate} 1s infinite alternate;
+  `}
   
   &:hover {
     background-color: ${props => props.selected ? "rgba(100%, 100%, 100%, 0.25)" : "rgba(0, 0, 0, 0.3)" };
@@ -77,7 +96,7 @@ const CollapsedButton = styled.button`
   ${VickyText};
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.15), 0 0 5px 5px inset rgba(0, 0, 0, 0.15);
   display: block;
-  padding: 0px;
+  padding: 0;
   border: 0;
   background: transparent;
   font-size: larger;
@@ -123,7 +142,7 @@ export default function SaveViewer(props: SaveViewerProps) {
   return (
     <SaveTable>
       <TitleRow onClick={() => setCollapsed(true)}>
-        <SavesHeader>Saves</SavesHeader>
+        <SavesHeader>Saves{props.loading ? " (loading)" : null}</SavesHeader>
         <SavesHeader>💾</SavesHeader>
       </TitleRow>
       <SubtitleRow>
@@ -133,7 +152,7 @@ export default function SaveViewer(props: SaveViewerProps) {
       <SaveList>
         {(props.saves ?? []).sort(sorter).map((save, index) => (
           <li key={index}>
-            <SaveLoadButton selected={props.selected?.includes(index)} onClick={() => {
+            <SaveLoadButton selected={props.selected?.includes(index)} loading={props.selected?.includes(index) && props.loading} onClick={() => {
               if (!props.selected?.includes(index) && props.onSelect) {
                 props.onSelect(index);
               }

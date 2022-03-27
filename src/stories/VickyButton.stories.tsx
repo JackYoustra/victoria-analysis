@@ -16,16 +16,16 @@ export default {
 
 //👇 We create a “template” of how args map to rendering
 const Template: ComponentStory<typeof VickyButton> = (args) => <VickyButton {...args}> {args.label} </VickyButton>;
-const Small: ComponentStory<typeof VickyMinorButton> = (args) => <VickyMinorButton {...args}> {args.label} </VickyMinorButton>;
+const SmallButton: ComponentStory<typeof VickyMinorButton> = (args) => <VickyMinorButton {...args}> {args.label} </VickyMinorButton>;
 
-export const FirstStory = Template.bind({});
-export const SmallStory = Small.bind({});
+export const Normal = Template.bind({});
+export const Small = SmallButton.bind({});
 
-FirstStory.args = {
+Normal.args = {
   /*👇 The args you need here will depend on your component */
   label: 'Vicky Button',
 };
 
-SmallStory.args = {
+Small.args = {
   label: 'Vicky Button',
 };
