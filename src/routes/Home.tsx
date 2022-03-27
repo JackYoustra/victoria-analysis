@@ -57,9 +57,11 @@ function DownloadJSON(props: { save: Save }) {
 
 export default function Home() {
   const vickyContext = useSave();
-  const handleClick: MouseEventHandler<HTMLButtonElement> = async event => {
+  const handleClick = useCallback(async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     const blobsInDirectory = await directoryOpen({
       recursive: true,
+      startIn: "documents",
+      id,
       skipDirectory: (entry) => entry.name === "mod",
     });
     for (const blob of blobsInDirectory) {
@@ -70,7 +72,15 @@ export default function Home() {
     }
     const config = await VickyGameConfiguration.createSave(blobsInDirectory);
     vickyContext.dispatch({type: "mergeConfiguration", value: config});
-  };
+  }, [vickyContext]);
+
+  const handleClickSave: MouseEventHandler<HTMLButtonElement> = useCallback(async event => {
+    await handleClick(event, "save");
+  }, [handleClick]);
+
+  const handleClickConfig: MouseEventHandler<HTMLButtonElement> = useCallback(async event => {
+    await handleClick(event, "config");
+  }, [handleClick]);
 
   const shouldShowSaveBox = _.isArray(vickyContext.state.saves) && vickyContext.state.saves.length > 0;
 
@@ -120,8 +130,8 @@ export default function Home() {
         {vickyContext.state.save && <DownloadJSON  save={vickyContext.state.save.original}/>}
         <img src={"https://vic2.paradoxwikis.com/images/0/0e/V2_wiki_logo.png"} className="App-logo" alt="logo" />
         <SaveButtons>
-          <VickyButton onClick={handleClick}> {text} </VickyButton>
-          <VickyButton onClick={handleClick}> {configText} </VickyButton>
+          <VickyButton onClick={handleClickSave}> {text} </VickyButton>
+          <VickyButton onClick={handleClickConfig}> {configText} </VickyButton>
         </SaveButtons>
       </div>
       {
