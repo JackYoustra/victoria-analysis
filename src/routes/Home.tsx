@@ -11,6 +11,7 @@ import styled from "styled-components";
 import SaveViewer from "./SaveViewer";
 import _ from "lodash";
 import { saveAs } from 'file-saver';
+import {Save} from "../logic/types/save/save";
 
 const Topper = styled.div`
   display: flex;
@@ -42,7 +43,7 @@ const GameSidebar = styled.div`
   z-index: 1;
 `;
 
-function DownloadJSON(props: { save: VickySave }) {
+function DownloadJSON(props: { save: Save }) {
   return (<VickyButton onClick={
     () => {
       const blob = new Blob([JSON.stringify(props.save, null, 2)], {type: "application/json"});
@@ -118,7 +119,7 @@ export default function Home() {
     <UsedTopper>
       <div style={divItems}>
         {vickyContext.state.save && <RouteBar />}
-        {vickyContext.state.save && <DownloadJSON  save={vickyContext.state.save}/>}
+        {vickyContext.state.save && <DownloadJSON  save={vickyContext.state.save.original}/>}
         <img src={"https://vic2.paradoxwikis.com/images/0/0e/V2_wiki_logo.png"} className="App-logo" alt="logo" />
         <SaveButtons>
           <VickyButton onClick={handleClick}> {text} </VickyButton>

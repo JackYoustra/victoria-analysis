@@ -9,6 +9,7 @@ import {Item, Menu} from "react-contexify";
 // @ts-ignore
 import domtoimage from "dom-to-image-more";
 import { saveAs } from 'file-saver';
+import {elementToSVG} from "dom-to-svg";
 
 const styles: React.CSSProperties = {
   display: "flex",
@@ -30,6 +31,13 @@ const colStyles: React.CSSProperties = {
 async function handleExport({e, props}: any) {
   const image = await (domtoimage.toPng(props.tableRoot) as Promise<Blob>);
   saveAs(image, `${props.name}.png`);
+}
+
+async function handleExportSVG({e, props}: any) {
+  const image = elementToSVG(props.tableRoot);
+  const string = new XMLSerializer().serializeToString(image);
+  const stringAsBlob = new Blob([string], {type: 'image/svg+xml'});
+  saveAs(stringAsBlob, `${props.name}.svg`);
 }
 
 export default function WarsView() {
@@ -66,6 +74,7 @@ export default function WarsView() {
       </div>
       <Menu id={contextMenuID}>
         <Item onClick={handleExport}>Save as PNG</Item>
+        <Item onClick={handleExportSVG}>Save as SVG</Item>
       </Menu>
     </div>
   );
