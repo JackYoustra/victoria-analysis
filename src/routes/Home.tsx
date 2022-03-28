@@ -14,6 +14,7 @@ import { saveAs } from 'file-saver';
 import {Save} from "../logic/types/save/save";
 import {wrap} from "comlink";
 import {SaveLoader} from "../logic/processing/loadSaveFromFile";
+import TopBar from "./TopBar";
 
 const Topper = styled.div`
   display: flex;
@@ -29,13 +30,6 @@ const SaveLoadedTopper = styled(Topper)`
   justify-content: center;
 `;
 
-const SaveButtons = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
-  transform: scale(50%);
-`;
-
 const GameSidebar = styled.div`
   position: fixed;
   top: 50%;
@@ -45,69 +39,10 @@ const GameSidebar = styled.div`
   z-index: 1;
 `;
 
-function DownloadJSON(props: { save: Save }) {
-  return (<VickyButton onClick={
-    () => {
-      const blob = new Blob([JSON.stringify(props.save, null, 2)], {type: "application/json"});
-      saveAs(blob, "save.json");
-    }
-  }>Download JSON
-  </VickyButton>);
-}
-
 export default function Home() {
   const vickyContext = useSave();
-  const handleClick = useCallback(async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
-    const blobsInDirectory = await directoryOpen({
-      recursive: true,
-      startIn: "documents",
-      id,
-      skipDirectory: (entry) => entry.name === "mod",
-    });
-    for (const blob of blobsInDirectory) {
-      const extension = blob.name.split('.').pop();
-      if (extension === "v2" && blob.directoryHandle?.name.toLowerCase() !== "tutorial") {
-        vickyContext.dispatch({ type: "addSave", handle: blob} );
-      }
-    }
-    const config = await VickyGameConfiguration.createSave(blobsInDirectory);
-    vickyContext.dispatch({type: "mergeConfiguration", value: config});
-  }, [vickyContext]);
-
-  const handleClickSave: MouseEventHandler<HTMLButtonElement> = useCallback(async event => {
-    await handleClick(event, "save");
-  }, [handleClick]);
-
-  const handleClickConfig: MouseEventHandler<HTMLButtonElement> = useCallback(async event => {
-    await handleClick(event, "config");
-  }, [handleClick]);
 
   const shouldShowSaveBox = _.isArray(vickyContext.state.saves) && vickyContext.state.saves.length > 0;
-
-  const divItems: React.CSSProperties = vickyContext.state.save ? {
-    display: "flex",
-    alignItems: "center",
-    overflow: "hidden",
-    flexWrap: "wrap",
-} : {
-    display: "contents"
-  };
-
-  const text = useMemo(() => {
-    if (!vickyContext.state.saves) {
-      return "Load Save folder";
-    } else {
-      return "Reload folder";
-    }
-  }, [vickyContext.state.saves]);
-
-  const configText = useMemo(() => {
-    if (!vickyContext.state.configuration) {
-      return "Load Configuration";
-    } else {
-      return "Reload Configuration";
-    }
-  }, [vickyContext.state.configuration]);
 
   const UsedTopper = vickyContext.state.save ? SaveLoadedTopper : Topper;
   const [selected, setSelected] = useState<number[]>([]);
@@ -117,23 +52,15 @@ export default function Home() {
       const worker = new Worker(new URL('../logic/processing/loadSaveFromFile.ts', import.meta.url));
       const proxy = wrap<SaveLoader>(worker);
       vickyContext.dispatch({type: "loadSave", worker: worker});
+      setSelected([index]);
       const save = await proxy.loadSaveFromFile(selected.handle);
       vickyContext.dispatch({type: "setSave", value: save});
-      setSelected([index]);
     }
   }, [vickyContext]);
 
   return (
     <UsedTopper>
-      <div style={divItems}>
-        {vickyContext.state.save && <RouteBar />}
-        {vickyContext.state.save && <DownloadJSON  save={vickyContext.state.save.original}/>}
-        <img src={"https://vic2.paradoxwikis.com/images/0/0e/V2_wiki_logo.png"} className="App-logo" alt="logo" />
-        <SaveButtons>
-          <VickyButton onClick={handleClickSave}> {text} </VickyButton>
-          <VickyButton onClick={handleClickConfig}> {configText} </VickyButton>
-        </SaveButtons>
-      </div>
+      <TopBar/>
       {
         vickyContext.state.save &&
         <RoutedEditorScreen/>
@@ -145,6 +72,7 @@ export default function Home() {
                   saves={vickyContext.state.saves?.map(save => [save.handle.name, new Date(save.handle.lastModified)])}
                   onSelect={onSelect}
                   selected={selected}
+                  loading={vickyContext.state.saveLoader !== undefined}
               />
           </GameSidebar>
       }

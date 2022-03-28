@@ -15,7 +15,7 @@ type Dispatch = (action: Action) => void
 type State = VickyContext
 type VickySavesProviderProps = {children: React.ReactNode}
 
-const VickySavesContext = React.createContext<
+export const VickySavesContext = React.createContext<
   {state: State; dispatch: Dispatch} | undefined
   >(undefined);
 
@@ -36,6 +36,7 @@ function saveReducer(state: State, action: Action): VickyContext {
       return {
         ...state,
         save: action.value,
+        saveLoader: undefined,
       }
     }
     case 'mergeConfiguration': {
