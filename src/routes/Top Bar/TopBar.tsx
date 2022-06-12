@@ -12,13 +12,13 @@ interface BarItemsProps {
 }
 
 const BarItems = styled.div<BarItemsProps>`
-  display: ${props => props.save ? "contents" : "flex"};
+  display: flex;
   // Makes children 100% of parent. See https://stackoverflow.com/a/32466333/998335
   align-items: stretch;
   overflow: hidden;
   flex: 1 1 auto;
   flex-wrap: wrap;
-  width: 100%;
+  width: ${props => props.save ? "100%" : "auto"};
 `;
 
 const SaveButtons = styled.div`
@@ -77,7 +77,7 @@ export default function TopBar() {
 
   const VickyButtonType = state.save ? VickyMinorButton : VickyButton;
 
-  return (<BarItems>
+  return (<BarItems save={state.save}>
     {state.save && <RouteBar/>}
     {state.save && <DownloadJSON save={state.save.original}/>}
     <Spacer/>

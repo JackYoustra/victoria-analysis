@@ -4,8 +4,8 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import {ColDef, ColGroupDef} from "ag-grid-community/dist/lib/entities/colDef";
 import _ from "lodash";
-import {MouseEventHandler, useCallback, useMemo, useState} from "react";
-import {GridApi} from "ag-grid-community";
+import {MouseEventHandler, useCallback, useEffect, useLayoutEffect, useMemo, useState} from "react";
+import {ColumnApi, GridApi, GridReadyEvent} from "ag-grid-community";
 import {VickyMinorButton} from "../../components/VickyButton";
 
 interface DataExporterProps {
@@ -63,7 +63,11 @@ export default function DataExporter(props: DataExporterProps) {
 
   const download: MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     gridApi?.exportDataAsCsv({fileName: `${props.field}.csv`});
-  }, [gridApi]);
+  }, [gridApi, props.field]);
+
+  const onGridReady = useCallback((params: GridReadyEvent) => {
+    setGridApi(params.api);
+  }, []);
 
   return (
     <>
@@ -82,7 +86,8 @@ export default function DataExporter(props: DataExporterProps) {
           rowMultiSelectWithClick={true}
           groupSelectsChildren={true}
           groupSelectsFiltered={true}
-          onGridReady={params => setGridApi(params.api)}
+          onGridReady={params => onGridReady(params)}
+          onFirstDataRendered={params => params.columnApi.autoSizeAllColumns(false)}
         >
         </AgGridReact>
         </div>
