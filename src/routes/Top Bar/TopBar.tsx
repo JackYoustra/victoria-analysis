@@ -15,8 +15,6 @@ const BarItems = styled.div<BarItemsProps>`
   display: flex;
   // Makes children 100% of parent. See https://stackoverflow.com/a/32466333/998335
   align-items: stretch;
-  overflow: hidden;
-  flex: 1 1 auto;
   flex-wrap: wrap;
   width: ${props => props.save ? "100%" : "auto"};
 `;

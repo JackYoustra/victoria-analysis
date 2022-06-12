@@ -23,7 +23,7 @@ const Topper = styled.div`
   justify-content: start;
   font-size: calc(10px + 2vmin);
   color: white;
-  overflow: hidden;
+  height: 100%;
 `;
 
 const SaveLoadedTopper = styled(Topper)`

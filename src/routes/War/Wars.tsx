@@ -12,22 +12,22 @@ import { saveAs } from 'file-saver';
 import {elementToSVG} from "dom-to-svg";
 import styled, {css} from "styled-components";
 
-const styles: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "row",
-  alignSelf: "flex-start",
-  fontSize: "1rem",
-  // justifyContent: "space-around",
-  gap: "8pt",
-}
+const WarsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-self: flex-start;
+  font-size: 1rem;
+  gap: 8pt;
+  min-height: 0;
+  flex: 1 1 0;
+`;
 
-const colStyles: React.CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: "8pt",
-  height: "90vh",
-  overflow: "auto",
-}
+const WarColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8pt;
+  overflow: auto;
+`;
 
 interface WarBoxProps {
   selected: boolean
@@ -68,8 +68,8 @@ export default function WarsView() {
   }
   const wars = box(vickyContext.save?.original.previous_war).concat(box(vickyContext.save?.original.active_war));
   return (
-    <div style={styles}>
-      <div style={colStyles}>
+    <WarsContainer>
+      <WarColumn>
         {
           wars.map(war => {
             return (
@@ -79,16 +79,16 @@ export default function WarsView() {
             );
           })
         }
-      </div>
-      <div style={colStyles}>
+      </WarColumn>
+      <WarColumn>
         {selectedWar ?
           box(selectedWar.history.battle).map(battle => <BattleView battle={battle} />)
           : null}
-      </div>
+      </WarColumn>
       <Menu id={contextMenuID}>
         <Item onClick={handleExport}>Save as PNG</Item>
         <Item onClick={handleExportSVG}>Save as SVG</Item>
       </Menu>
-    </div>
+    </WarsContainer>
   );
 }

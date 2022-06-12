@@ -19,7 +19,7 @@ const SaveTable = styled.div`
   white-space: nowrap;
   text-align: start;
   overflow: auto;
-  max-height: 100vh;
+  max-height: 75vh;
 `;
 
 const SaveRow = styled.div`
