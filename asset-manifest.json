@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/victoria-analysis/static/css/main.3b54c929.css",
-    "main.js": "/victoria-analysis/static/js/main.82d60699.js",
-    "static/js/228.5bd5d789.chunk.js": "/victoria-analysis/static/js/228.5bd5d789.chunk.js",
+    "main.css": "/victoria-analysis/static/css/main.582a25dc.css",
+    "main.js": "/victoria-analysis/static/js/main.3e7c9347.js",
+    "static/js/228.ab33e07a.chunk.js": "/victoria-analysis/static/js/228.ab33e07a.chunk.js",
     "static/js/787.9e5dbc76.chunk.js": "/victoria-analysis/static/js/787.9e5dbc76.chunk.js",
-    "static/js/161.8e16089d.chunk.js": "/victoria-analysis/static/js/161.8e16089d.chunk.js",
+    "static/js/161.a4add036.chunk.js": "/victoria-analysis/static/js/161.a4add036.chunk.js",
     "index.html": "/victoria-analysis/index.html",
     "static/media/index.cjs": "/victoria-analysis/static/media/index.cd351d7c31d0d3fccf96.cjs",
-    "main.3b54c929.css.map": "/victoria-analysis/static/css/main.3b54c929.css.map",
-    "main.82d60699.js.map": "/victoria-analysis/static/js/main.82d60699.js.map",
-    "228.5bd5d789.chunk.js.map": "/victoria-analysis/static/js/228.5bd5d789.chunk.js.map",
+    "main.582a25dc.css.map": "/victoria-analysis/static/css/main.582a25dc.css.map",
+    "main.3e7c9347.js.map": "/victoria-analysis/static/js/main.3e7c9347.js.map",
+    "228.ab33e07a.chunk.js.map": "/victoria-analysis/static/js/228.ab33e07a.chunk.js.map",
     "787.9e5dbc76.chunk.js.map": "/victoria-analysis/static/js/787.9e5dbc76.chunk.js.map",
-    "161.8e16089d.chunk.js.map": "/victoria-analysis/static/js/161.8e16089d.chunk.js.map"
+    "161.a4add036.chunk.js.map": "/victoria-analysis/static/js/161.a4add036.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3b54c929.css",
-    "static/js/main.82d60699.js"
+    "static/css/main.582a25dc.css",
+    "static/js/main.3e7c9347.js"
   ]
 }
