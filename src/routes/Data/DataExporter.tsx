@@ -4,7 +4,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 import {ColDef, ColGroupDef} from "ag-grid-community/dist/lib/entities/colDef";
 import _ from "lodash";
-import {useCallback, useMemo, useState} from "react";
+import {MouseEventHandler, useCallback, useMemo, useState} from "react";
 import {GridApi} from "ag-grid-community";
 import {VickyMinorButton} from "../../components/VickyButton";
 
@@ -61,7 +61,7 @@ export default function DataExporter(props: DataExporterProps) {
     sortable: true,
   };
 
-  const download = useCallback((event) => {
+  const download: MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     gridApi?.exportDataAsCsv({fileName: `${props.field}.csv`});
   }, [gridApi]);
 
@@ -73,7 +73,6 @@ export default function DataExporter(props: DataExporterProps) {
       <div style={{ display: "table", width: '100%', height: '80vh', flexGrow: 1 }} className="ag-theme-balham-dark">
         <div style={{display: "table-cell"}}>
         <AgGridReact
-          reactUi={true}
           rowData={save[props.field]}
           columnDefs={fields}
           defaultColDef={defaultDef}

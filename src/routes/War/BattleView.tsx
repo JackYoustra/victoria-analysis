@@ -47,7 +47,7 @@ export default function BattleView(props: BattleViewProps) {
 
   const tableRoot = useRef<HTMLDivElement | null>(null);
 
-  const handleContextMenu = useCallback((event) => {
+  const handleContextMenu: React.MouseEventHandler<HTMLDivElement> = useCallback((event) => {
     event.preventDefault();
     showContextMenu(event, {
       props: {
