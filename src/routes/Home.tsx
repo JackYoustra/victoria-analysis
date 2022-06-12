@@ -15,6 +15,7 @@ import {Save} from "../logic/types/save/save";
 import {wrap} from "comlink";
 import {SaveLoader} from "../logic/processing/loadSaveFromFile";
 import TopBar from "./Top Bar/TopBar";
+import GithubCorner from "react-github-corner";
 
 const Topper = styled.div`
   display: flex;
@@ -59,23 +60,26 @@ export default function Home() {
   }, [vickyContext]);
 
   return (
-    <UsedTopper>
-      <TopBar/>
-      {
-        vickyContext.state.save &&
-        <RoutedEditorScreen/>
-      }
-      {
-        shouldShowSaveBox &&
-          <GameSidebar>
-              <SaveViewer
-                  saves={vickyContext.state.saves?.map(save => [save.handle.name, new Date(save.handle.lastModified)])}
-                  onSelect={onSelect}
-                  selected={selected}
-                  loading={vickyContext.state.saveLoader !== undefined}
-              />
-          </GameSidebar>
-      }
-    </UsedTopper>
+    <>
+      <GithubCorner href="https://github.com/jackyoustra/victoria-analysis" />
+      <UsedTopper>
+        <TopBar/>
+        {
+          vickyContext.state.save &&
+          <RoutedEditorScreen/>
+        }
+        {
+          shouldShowSaveBox &&
+            <GameSidebar>
+                <SaveViewer
+                    saves={vickyContext.state.saves?.map(save => [save.handle.name, new Date(save.handle.lastModified)])}
+                    onSelect={onSelect}
+                    selected={selected}
+                    loading={vickyContext.state.saveLoader !== undefined}
+                />
+            </GameSidebar>
+        }
+      </UsedTopper>
+    </>
   );
 }
