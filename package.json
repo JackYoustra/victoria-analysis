@@ -87,6 +87,7 @@
     "@types/papaparse": "^5.3.2",
     "@types/storybook-react-router": "^1.0.1",
     "@types/styled-components": "^5.1.25",
+    "history": "^5.3.0",
     "storybook-react-context": "^0.6.0",
     "storybook-react-router": "^1.0.8",
     "webpack": "^5.73.0"

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import {VickyFrills} from "../../styles/VickyFrills";
 import {Link} from "react-router-dom";
 
@@ -7,7 +7,7 @@ const Bar = styled.div`
   flex-direction: row;
 `;
 
-const Element = styled(Link)`
+const Element = css`
   ${VickyFrills};
   padding: 0 10pt 0 0;
   flex-direction: column;
@@ -25,6 +25,14 @@ const Element = styled(Link)`
   }
 `;
 
+const LinkElement = styled(Link)`
+  ${Element};
+`;
+
+const ButtonElement = styled.button`
+  ${Element};
+`;
+
 const TitleHeader = styled.div`
   display: flex;
   flex-direction: row;
@@ -37,10 +45,15 @@ const TopIcon = styled.img`
   height: 40pt;
 `;
 
+const TopEmoji = styled.p`
+  width: 40pt;
+  height: 40pt;
+`;
+
 export default function RouteBar() {
   return (
     <Bar>
-      <Element to="/factories">
+      <LinkElement to="/factories">
         <TitleHeader>
           <TopIcon
             src="https://vic2.paradoxwikis.com/images/4/4d/Tech_industrial.png"
@@ -48,8 +61,8 @@ export default function RouteBar() {
           />
           Factories
         </TitleHeader>
-      </Element>
-      <Element to="/pops">
+      </LinkElement>
+      <LinkElement to="/pops">
         <TitleHeader>
           <TopIcon
             src="https://vic2.paradoxwikis.com/images/9/98/Province_pop.png"
@@ -57,8 +70,8 @@ export default function RouteBar() {
           />
           Pops
         </TitleHeader>
-      </Element>
-      <Element to="/wars">
+      </LinkElement>
+      <LinkElement to="/wars">
         <TitleHeader>
           <TopIcon
             src = "https://vic2.paradoxwikis.com/images/f/fd/Tech_army.png"
@@ -66,7 +79,15 @@ export default function RouteBar() {
           />
           War
         </TitleHeader>
-      </Element>
+      </LinkElement>
+      <ButtonElement>
+        <TitleHeader>
+          <TopEmoji>
+            📜
+          </TopEmoji>
+          Download JSON
+        </TitleHeader>
+      </ButtonElement>
     </Bar>
   );
 }
