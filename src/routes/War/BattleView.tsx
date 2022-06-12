@@ -22,6 +22,14 @@ function EquipmentView(combatant: Combatant, configuration?: VickyGameConfigurat
   );
 }
 
+function leaderName(nominal: string): string {
+  if (nominal.length > 0) {
+    return nominal;
+  } else {
+    return "(No leader!)"
+  }
+}
+
 const headerStyle: React.CSSProperties = {
   backgroundColor: "#C3D6EF",
   textAlign: "center",
@@ -112,14 +120,14 @@ export default function BattleView(props: BattleViewProps) {
           <TableItem style={{display: "table-cell"}}>
             <b>Attackers</b>
             <br/>
-            {battle.attacker.leader}
+            {leaderName(battle.attacker.leader)}
             <br/>
             {EquipmentView(battle.attacker, configuration)}
           </TableItem>
           <TableItem>
             <b>Defenders</b>
             <br/>
-            {battle.defender.leader}
+            {leaderName(battle.defender.leader)}
             <br/>
             {EquipmentView(battle.defender, configuration)}
           </TableItem>

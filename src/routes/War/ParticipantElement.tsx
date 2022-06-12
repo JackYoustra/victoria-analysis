@@ -15,7 +15,7 @@ interface DateFragmentProps extends ParticipantElementProps {
 }
 
 function DateFragment(props: DateFragmentProps) {
-  const fragment = useMemo(() => dateFragment(props.enterLeaveWarDates, props.start, props.end), [props.enterLeaveWarDates, props.start, props.end]);
+  const fragment = useMemo(() => dateFragment(props.enterLeaveWarDates, props.start, props.end, true), [props.enterLeaveWarDates, props.start, props.end]);
   if (fragment) {
     return (
       <div style={{fontFamily: "serif", fontSize: "0.8rem", fontStyle: "italic"}}>

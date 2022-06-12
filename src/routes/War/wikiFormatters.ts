@@ -1,7 +1,7 @@
 import {parseDate} from "../../logic/processing/vickySave";
 import _ from "lodash";
 
-export function dateFragment(stringDates: string[], start: Date, end: Date): string | null {
+export function dateFragment(stringDates: string[], start: Date, end: Date, short?: boolean): string | null {
   const dates = stringDates.map(x => parseDate(x));
   const localized: string[] = [];
   if (dates.length % 2 == 1) {
@@ -15,9 +15,9 @@ export function dateFragment(stringDates: string[], start: Date, end: Date): str
     if (startQualified && endQualified) {
       return null;
     } else if (endQualified) {
-      return `${localizeDate(dates[0])} -`;
+      return `${localizeDate(dates[0], short)} -`;
     } else if (startQualified) {
-      return `- ${localizeDate(dates[1])}`;
+      return `- ${localizeDate(dates[1], short)}`;
     }
   }
 
@@ -27,6 +27,19 @@ export function dateFragment(stringDates: string[], start: Date, end: Date): str
   }).join(", ");
 }
 
-export function localizeDate(date: Date): string {
-  return date.toLocaleDateString(navigator.languages[0] ?? "en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+export function localizeDate(date: Date, short?: boolean): string {
+  if (short) {
+    return date.toLocaleDateString(navigator.languages[0] ?? "en-US", {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric'
+    });
+  } else {
+    return date.toLocaleDateString(navigator.languages[0] ?? "en-US", {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
 }
