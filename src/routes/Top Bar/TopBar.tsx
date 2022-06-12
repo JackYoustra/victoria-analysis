@@ -1,5 +1,5 @@
 import RouteBar from "../controller/RouteBar";
-import {VickyMinorButton} from "../../components/VickyButton";
+import {VickyButton, VickyMinorButton} from "../../components/VickyButton";
 import React, {MouseEventHandler, useCallback, useMemo} from "react";
 import {useSave} from "../../logic/VickySavesProvider";
 import styled from "styled-components";
@@ -18,17 +18,13 @@ const BarItems = styled.div<BarItemsProps>`
   overflow: hidden;
   flex: 1 1 auto;
   flex-wrap: wrap;
+  width: 100%;
 `;
 
 const SaveButtons = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
-  font-size: 10%;
-`;
-
-const VickyLogo = styled.img`
-  width: 10rem;
 `;
 
 const Spacer = styled.div`
@@ -79,14 +75,16 @@ export default function TopBar() {
     }
   }, [state.configuration]);
 
+  const VickyButtonType = state.save ? VickyMinorButton : VickyButton;
+
   return (<BarItems>
     {state.save && <RouteBar/>}
     {state.save && <DownloadJSON save={state.save.original}/>}
     <Spacer/>
     <SaveButtons>
-      <VickyLogo src={"https://vic2.paradoxwikis.com/images/0/0e/V2_wiki_logo.png"} alt="Victoria 2 logo"/>
-      <VickyMinorButton onClick={handleClickSave}> {text} </VickyMinorButton>
-      <VickyMinorButton onClick={handleClickConfig}> {configText} </VickyMinorButton>
+      {(!state.save) && <img src={"https://vic2.paradoxwikis.com/images/0/0e/V2_wiki_logo.png"} alt="Victoria 2 logo"/> }
+      <VickyButtonType onClick={handleClickSave}> {text} </VickyButtonType>
+      <VickyButtonType onClick={handleClickConfig}> {configText} </VickyButtonType>
     </SaveButtons>
   </BarItems>);
 }

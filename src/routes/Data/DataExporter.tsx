@@ -68,7 +68,7 @@ export default function DataExporter(props: DataExporterProps) {
   return (
     <>
       <VickyMinorButton onClick={download}>
-        Download CSV
+        Download table as CSV
       </VickyMinorButton>
       <div style={{ display: "table", width: '100%', height: '80vh', flexGrow: 1 }} className="ag-theme-balham-dark">
         <div style={{display: "table-cell"}}>
