@@ -4,5 +4,17 @@ module.exports = {
   "framework": "@storybook/react",
   core: {
     builder: "webpack5"
-  }
+  },
+  webpackFinal(config, { configType }) {
+    return {
+      ...config,
+      resolve: {
+        ...config.resolve,
+        fallback: {
+          ...config.resolve.fallback,
+          stream: require.resolve('stream-browserify'),
+        },
+      },
+    };
+  },
 };
