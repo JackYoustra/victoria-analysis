@@ -10,6 +10,7 @@ import {Item, Menu} from "react-contexify";
 import domtoimage from "dom-to-image-more";
 import { saveAs } from 'file-saver';
 import {elementToSVG} from "dom-to-svg";
+import styled, {css} from "styled-components";
 
 const styles: React.CSSProperties = {
   display: "flex",
@@ -27,6 +28,21 @@ const colStyles: React.CSSProperties = {
   height: "90vh",
   overflow: "auto",
 }
+
+interface WarBoxProps {
+  selected: boolean
+}
+
+const WarBox = styled.div<WarBoxProps>`
+  ${({ selected }) => selected && css`
+    border: inset red;
+    box-sizing: border-box;
+  `}
+
+  ${({ selected }) => (!selected) && css`
+    border: solid rgb(248, 249, 250);
+  `}
+`;
 
 async function handleExport({e, props}: any) {
   const image = await (domtoimage.toPng(props.tableRoot) as Promise<Blob>);
@@ -56,14 +72,11 @@ export default function WarsView() {
       <div style={colStyles}>
         {
           wars.map(war => {
-            const warView = <WarView war={war} onHover={useSelectedWar}/>;
-            if (war == selectedWar) {
-              return (<div style={{border: "inset red", boxSizing: "border-box"}}>
-                {warView}
-              </div>)
-            } else {
-              return warView;
-            }
+            return (
+              <WarBox selected={war === selectedWar}>
+                <WarView war={war} onHover={useSelectedWar}/>
+              </WarBox>
+            );
           })
         }
       </div>
