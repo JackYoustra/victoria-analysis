@@ -14,7 +14,7 @@ import { saveAs } from 'file-saver';
 import {Save} from "../logic/types/save/save";
 import {wrap} from "comlink";
 import {SaveLoader} from "../logic/processing/loadSaveFromFile";
-import TopBar from "./TopBar";
+import TopBar from "./Top Bar/TopBar";
 
 const Topper = styled.div`
   display: flex;

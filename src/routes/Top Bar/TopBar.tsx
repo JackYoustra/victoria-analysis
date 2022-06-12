@@ -1,12 +1,12 @@
-import RouteBar from "./controller/RouteBar";
-import {VickyButton} from "../components/VickyButton";
+import RouteBar from "../controller/RouteBar";
+import {VickyButton} from "../../components/VickyButton";
 import React, {MouseEventHandler, useCallback, useMemo} from "react";
-import {useSave} from "../logic/VickySavesProvider";
+import {useSave} from "../../logic/VickySavesProvider";
 import styled from "styled-components";
 import {directoryOpen} from "browser-fs-access";
-import {VickyGameConfiguration} from "../logic/processing/vickyConfiguration";
-import {Save} from "../logic/types/save/save";
-import {saveAs} from "file-saver";
+import {VickyGameConfiguration} from "../../logic/processing/vickyConfiguration";
+import DownloadJSON from "./DownloadJSON";
+import {Bar} from "./BarStyles";
 
 interface BarItemsProps {
   save?: any,
@@ -26,16 +26,6 @@ const SaveButtons = styled.div`
   transform: scale(50%);
 `;
 
-function DownloadJSON(props: { save: Save }) {
-  return (<VickyButton onClick={
-    () => {
-      const blob = new Blob([JSON.stringify(props.save, null, 2)], {type: "application/json"});
-      saveAs(blob, "save.json");
-    }
-  }>Download JSON
-  </VickyButton>);
-}
-
 export default function TopBar() {
   const {state, dispatch} = useSave();
 
@@ -49,7 +39,7 @@ export default function TopBar() {
     for (const blob of blobsInDirectory) {
       const extension = blob.name.split('.').pop();
       if (extension === "v2" && blob.directoryHandle?.name.toLowerCase() !== "tutorial") {
-        dispatch({ type: "addSave", handle: blob} );
+        dispatch({type: "addSave", handle: blob});
       }
     }
     const config = await VickyGameConfiguration.createSave(blobsInDirectory);
@@ -81,8 +71,10 @@ export default function TopBar() {
   }, [state.configuration]);
 
   return (<BarItems>
-    {state.save && <RouteBar/>}
-    {state.save && <DownloadJSON save={state.save.original}/>}
+    <Bar>
+      {state.save && <RouteBar/>}
+      {state.save && <DownloadJSON save={state.save.original}/>}
+    </Bar>
     <img src={"https://vic2.paradoxwikis.com/images/0/0e/V2_wiki_logo.png"} className="App-logo" alt="logo"/>
     <SaveButtons>
       <VickyButton onClick={handleClickSave}> {text} </VickyButton>

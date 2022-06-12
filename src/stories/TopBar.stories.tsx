@@ -6,7 +6,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import {withReactContext} from "storybook-react-context";
 import {VickySavesContext} from "../logic/VickySavesProvider";
-import TopBar from "../routes/TopBar";
+import TopBar from "../routes/Top Bar/TopBar";
 import {createMemoryHistory} from "history";
 
 //@ts-ignore
@@ -34,7 +34,7 @@ export default {
   * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
   * to learn how to generate automatic titles
   */
-  title: 'Buttons/TopBar',
+  title: 'Buttons/Top Bar',
   component: TopBar,
   decorators: [
     withReactContext({
