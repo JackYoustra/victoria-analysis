@@ -87,7 +87,7 @@ export default function DataExporter(props: DataExporterProps) {
           groupSelectsChildren={true}
           groupSelectsFiltered={true}
           onGridReady={params => onGridReady(params)}
-          onFirstDataRendered={params => params.columnApi.autoSizeAllColumns(false)}
+          // onFirstDataRendered={params => params.columnApi.autoSizeAllColumns(false)}
         >
         </AgGridReact>
         </div>
