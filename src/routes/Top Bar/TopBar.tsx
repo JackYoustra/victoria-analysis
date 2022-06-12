@@ -1,12 +1,11 @@
 import RouteBar from "../controller/RouteBar";
-import {VickyButton} from "../../components/VickyButton";
+import {VickyButton, VickyMinorButton} from "../../components/VickyButton";
 import React, {MouseEventHandler, useCallback, useMemo} from "react";
 import {useSave} from "../../logic/VickySavesProvider";
 import styled from "styled-components";
 import {directoryOpen} from "browser-fs-access";
 import {VickyGameConfiguration} from "../../logic/processing/vickyConfiguration";
 import DownloadJSON from "./DownloadJSON";
-import {Bar} from "./BarStyles";
 
 interface BarItemsProps {
   save?: any,
@@ -14,16 +13,26 @@ interface BarItemsProps {
 
 const BarItems = styled.div<BarItemsProps>`
   display: ${props => props.save ? "contents" : "flex"};
-  align-items: center;
+  // Makes children 100% of parent. See https://stackoverflow.com/a/32466333/998335
+  align-items: stretch;
   overflow: hidden;
   flex: 1 1 auto;
+  flex-wrap: wrap;
 `;
 
 const SaveButtons = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
-  transform: scale(50%);
+  font-size: 10%;
+`;
+
+const VickyLogo = styled.img`
+  width: 10rem;
+`;
+
+const Spacer = styled.div`
+  flex-grow: 1;
 `;
 
 export default function TopBar() {
@@ -71,14 +80,13 @@ export default function TopBar() {
   }, [state.configuration]);
 
   return (<BarItems>
-    <Bar>
-      {state.save && <RouteBar/>}
-      {state.save && <DownloadJSON save={state.save.original}/>}
-    </Bar>
-    <img src={"https://vic2.paradoxwikis.com/images/0/0e/V2_wiki_logo.png"} className="App-logo" alt="logo"/>
+    {state.save && <RouteBar/>}
+    {state.save && <DownloadJSON save={state.save.original}/>}
+    <Spacer/>
     <SaveButtons>
-      <VickyButton onClick={handleClickSave}> {text} </VickyButton>
-      <VickyButton onClick={handleClickConfig}> {configText} </VickyButton>
+      <VickyLogo src={"https://vic2.paradoxwikis.com/images/0/0e/V2_wiki_logo.png"} alt="Victoria 2 logo"/>
+      <VickyMinorButton onClick={handleClickSave}> {text} </VickyMinorButton>
+      <VickyMinorButton onClick={handleClickConfig}> {configText} </VickyMinorButton>
     </SaveButtons>
   </BarItems>);
 }

@@ -1,4 +1,4 @@
-import { Bar, LinkElement, TitleHeader, TopIcon } from "../Top Bar/BarStyles";
+import { LinkElement, TitleHeader, TopIcon } from "../Top Bar/BarStyles";
 
 export default function RouteBar() {
   return (

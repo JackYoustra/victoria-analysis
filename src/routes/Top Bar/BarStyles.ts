@@ -2,18 +2,11 @@ import styled, {css} from "styled-components";
 import {VickyFrills} from "../../styles/VickyFrills";
 import {Link} from "react-router-dom";
 
-export const Bar = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
 const Element = css`
   ${VickyFrills};
   padding: 0 10pt 0 0;
   flex-direction: column;
   background-image: url(https://vic2.paradoxwikis.com/images/0/07/MainBG2.png);
-  height: 80pt;
-  //width: 200pt;
   color: white;
   
   &:active {
@@ -31,7 +24,6 @@ export const LinkElement = styled(Link)`
 
 export const ButtonElement = styled.button`
   ${Element};
-  height: auto;
 `;
 
 export const TitleHeader = styled.div`
