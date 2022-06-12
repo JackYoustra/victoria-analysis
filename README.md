@@ -23,7 +23,8 @@ Note that adding all the game configuration folders at once doesn't work (see: [
 - [x] Serverless! No communication / networking, all in browser.
 - [x] Web Worker / Async.
 - [x] Wiki boxes
-  - [x]: PNG / (buggy) SVG export (right click menu)
+  - [x] PNG (buggy)
+  - [x] SVG export (right click menu)
 - [x] Ag-grid + CSV export.
   - [x] Pops.
   - [x] Factories.
@@ -38,7 +39,7 @@ Note that adding all the game configuration folders at once doesn't work (see: [
   - [ ] About page
 - [ ] Live refresh of folder / dashboard
 - [ ] Add more analysis tools (I have a mapping of each of the fields onto a globe, exporting maps would be cool).
-- [ ] Add icons / artwork to the wiki battleboxes (heavyweight way for fontset: [v86 linux image](https://copy.sh/v86/) + python + [nanoemoji](https://github.com/googlefonts/nanoemoji).
+- [ ] Add icons / artwork to the wiki battleboxes (heavyweight way for fontset: [v86 linux image](https://copy.sh/v86/) + python + [nanoemoji](https://github.com/googlefonts/nanoemoji) or just binary patching of a preset one).
 - [ ] Better scrolling experience with wiki battleboxes.
 - [ ] Fix word wrapping in "save as svg".
 - [ ] Add indicators of which configuration files are currently loaded.
@@ -50,4 +51,7 @@ Note that adding all the game configuration folders at once doesn't work (see: [
 - [ ] Other paradox game support (turn into paradox-savegame-analyzer?)
   - [ ] HOI4
   - [ ] CK3
+  - [ ] EU4
   - [ ] Others, if others are interested (the above are the only ones I play, for now)
+- [ ] Export battles to other games to play in
+  - [ ] Mount and Blade (see: https://www.pcgamer.com/this-mod-lets-you-seamlessly-fight-crusader-kings-3-battles-in-mount-and-blade-2/)
