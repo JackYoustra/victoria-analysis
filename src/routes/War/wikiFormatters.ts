@@ -15,9 +15,9 @@ export function dateFragment(stringDates: string[], start: Date, end: Date, shor
     if (startQualified && endQualified) {
       return null;
     } else if (endQualified) {
-      return `${localizeDate(dates[0], short)} -`;
+      return `From ${localizeDate(dates[0], short)}`;
     } else if (startQualified) {
-      return `- ${localizeDate(dates[1], short)}`;
+      return `To ${localizeDate(dates[1], short)}`;
     }
   }
 
