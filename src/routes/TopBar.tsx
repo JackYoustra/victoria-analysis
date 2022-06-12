@@ -16,7 +16,7 @@ const BarItems = styled.div<BarItemsProps>`
   display: ${props => props.save ? "contents" : "flex"};
   align-items: center;
   overflow: hidden;
-  flex-wrap: wrap;
+  flex: 1 1 auto;
 `;
 
 const SaveButtons = styled.div`
