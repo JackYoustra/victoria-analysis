@@ -1,5 +1,5 @@
 import RouteBar from "../controller/RouteBar";
-import {VickyButton, VickyMinorButton} from "../../components/VickyButton";
+import {VickyMinorButton} from "../../components/VickyButton";
 import React, {MouseEventHandler, useCallback, useMemo} from "react";
 import {useSave} from "../../logic/VickySavesProvider";
 import styled from "styled-components";
