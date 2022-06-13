@@ -37,6 +37,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "start": "react-app-rewired --openssl-legacy-provider start",
@@ -88,7 +89,9 @@
     "@types/papaparse": "^5.3.2",
     "@types/storybook-react-router": "^1.0.1",
     "@types/styled-components": "^5.1.25",
+    "gh-pages": "^4.0.0",
     "history": "^5.3.0",
+    "source-map-explorer": "^2.5.2",
     "storybook-react-context": "^0.6.0",
     "storybook-react-router": "^1.0.8",
     "webpack": "^5.73.0"

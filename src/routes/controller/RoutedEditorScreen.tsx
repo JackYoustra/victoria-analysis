@@ -7,9 +7,9 @@ import WarsView from "../War/Wars";
 export default function RoutedEditorScreen() {
   return (
     <Routes>
-      <Route path="/factories" element={ <DataExporter field={"factories"}/> }/>
-      <Route path="/pops" element={ <DataExporter field={"pops"}/> }/>
-      <Route path="/wars" element={ <WarsView /> }/>
+      <Route path="victoria-analysis/factories" element={ <DataExporter field={"factories"}/> }/>
+      <Route path="victoria-analysis/pops" element={ <DataExporter field={"pops"}/> }/>
+      <Route path="victoria-analysis/wars" element={ <WarsView /> }/>
     </Routes>
   )
 }

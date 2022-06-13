@@ -28,7 +28,7 @@ const Topper = styled.div`
 `;
 
 const SaveLoadedTopper = styled(Topper)`
-  justify-content: center;
+  justify-content: start;
 `;
 
 const GameSidebar = styled.div`
